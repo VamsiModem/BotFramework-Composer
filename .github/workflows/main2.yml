@@ -18,6 +18,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm install
       - id: set-test-chunks
+        working-directory: ./Composer
         name: Set Chunks
         run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 2 | floor)]')"
       - id: set-test-chunk-ids
@@ -27,12 +28,17 @@ jobs:
           CHUNKS: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
   test:
     runs-on: ubuntu-latest
-    name: test (chunk ${{ matrix }})
+    name: test (chunk ${{ matrix.dir }})
     needs: [setup]
+    strategy:
+      matrix: 
+        dir: ${{fromJson(needs.setup.outputs['test-chunk-ids'])}}
+      fail-fast: true 
     steps:
       - uses: actions/checkout@v2
+        working-directory: ./Composer
       - run: npm install
       - name: jest
-        run: echo $CHUNKS | jq '.[${{ matrix }}] | .[] | @text' | xargs npx jest
+        run: echo $CHUNKS | jq '.[${{ matrix.dir }}] | .[] | @text' | xargs npx jest
         env:
           CHUNKS: ${{ needs.setup.outputs['test-chunks'] }}
