@@ -17,9 +17,11 @@ jobs:
     steps:
       - id: set-test-chunks
         name: Set Chunks
+        working-directory: ./Composer
         run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 2 | floor)]')"
       - id: set-test-chunk-ids
         name: Set Chunk IDs
+        working-directory: ./Composer
         run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
         env:
           CHUNKS: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
@@ -35,6 +37,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: yarn install
       - name: jest
+        working-directory: ./Composer
         run: echo $CHUNKS | jq '.[${{ matrix.dir }}] | .[] | @text' | xargs npx jest
         env:
           CHUNKS: ${{ needs.setup.outputs['test-chunks'] }}
