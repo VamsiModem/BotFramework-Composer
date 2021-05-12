@@ -16,11 +16,14 @@ jobs:
       test-chunk-ids: ${{ steps['set-test-chunk-ids'].outputs['test-chunk-ids'] }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          base-path: ./Composer
       - run: npm install
       - id: set-test-chunks
-        working-directory: ./Composer
         name: Set Chunks
         run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 2 | floor)]')"
+        
       - id: set-test-chunk-ids
         name: Set Chunk IDs
         run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
@@ -31,14 +34,16 @@ jobs:
     name: test (chunk ${{ matrix.dir }})
     needs: [setup]
     strategy:
-      matrix: 
+      fail-fast: true
+      matrix:
         dir: ${{fromJson(needs.setup.outputs['test-chunk-ids'])}}
-      fail-fast: true 
     steps:
       - uses: actions/checkout@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          base-path: ./Composer
       - run: npm install
       - name: jest
-        working-directory: ./Composer
         run: echo $CHUNKS | jq '.[${{ matrix.dir }}] | .[] | @text' | xargs npx jest
         env:
           CHUNKS: ${{ needs.setup.outputs['test-chunks'] }}
