@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 defaults:
   run:
-    working-directory: /home/runner/work/BotFramework-Composer/BotFramework-Composer/Composer
+    working-directory: /Composer
 jobs:
   setup:
     runs-on: ubuntu-latest
