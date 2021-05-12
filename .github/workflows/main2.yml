@@ -17,8 +17,7 @@ jobs:
     steps:
       - id: set-test-chunks
         name: Set Chunks
-        run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 2 | floor)]')"
-        working-directory: ./BotFramework-Composer/Composer
+        run: echo $PWD
       - id: set-test-chunk-ids
         name: Set Chunk IDs
         run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
