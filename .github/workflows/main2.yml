@@ -29,8 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     name: test (chunk ${{ matrix }})
     needs: [setup]
-    strategy:
-      matrix: ${{fromJson(needs.setup.outputs['test-chunk-ids'])}}
     steps:
       - uses: actions/checkout@v2
       - run: npm install
