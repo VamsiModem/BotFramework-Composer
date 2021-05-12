@@ -27,15 +27,15 @@ jobs:
           CHUNKS: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
   test:
     runs-on: ubuntu-latest
-    name: test (chunk ${{ matrix.chunk }})
+    name: test (chunk ${{ matrix.dir }})
     needs: [setup]
     strategy:
       matrix:
-        chunk: ${{ fromJson(needs.setup.outputs['test-chunk-ids']) }}
+        dir: ${{ fromJson(needs.setup.outputs['test-chunk-ids']) }}
     steps:
       - uses: actions/checkout@v2
       - run: npm install
       - name: jest
-        run: echo $CHUNKS | jq '.[${{ matrix.chunk }}] | .[] | @text' | xargs npx jest
+        run: echo $CHUNKS | jq '.[${{ matrix.dir }}] | .[] | @text' | xargs npx jest
         env:
           CHUNKS: ${{ needs.setup.outputs['test-chunks'] }}
