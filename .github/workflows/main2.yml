@@ -17,7 +17,7 @@ jobs:
     steps:
       - id: set-test-chunks
         name: Set Chunks
-        run: echo $PWD
+        run: for i in *;ls "$i";done
       - id: set-test-chunk-ids
         name: Set Chunk IDs
         run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
