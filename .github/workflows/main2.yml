@@ -8,9 +8,6 @@ on:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
-defaults:
-  run:
-    working-directory: /Composer
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -21,6 +18,7 @@ jobs:
       - id: set-test-chunks
         name: Set Chunks
         run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 2 | floor)]')"
+        working-directory: /Composer
       - id: set-test-chunk-ids
         name: Set Chunk IDs
         run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
