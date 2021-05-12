@@ -1,10 +1,10 @@
 name: Docker Build Validation
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    types: [opened, reopened, synchronize]
+#  push:
+#    branches: [main]
+#  pull_request:
+#    types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 jobs:
