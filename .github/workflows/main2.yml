@@ -36,9 +36,9 @@ jobs:
       fail-fast: true 
     steps:
       - uses: actions/checkout@v2
-        working-directory: ./Composer
       - run: npm install
       - name: jest
+        working-directory: ./Composer
         run: echo $CHUNKS | jq '.[${{ matrix.dir }}] | .[] | @text' | xargs npx jest
         env:
           CHUNKS: ${{ needs.setup.outputs['test-chunks'] }}
