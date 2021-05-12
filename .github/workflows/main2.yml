@@ -52,8 +52,6 @@ jobs:
       matrix:
         dir: ${{fromJson(needs.setup.outputs['test-chunk-ids'])}}
     steps:
-      - uses: actions/checkout@v2
-      - run: yarn install
       - name: jest
         run: echo $CHUNKS | jq '.[${{ matrix.dir }}] | .[] | @text' | xargs npx jest
         env:
