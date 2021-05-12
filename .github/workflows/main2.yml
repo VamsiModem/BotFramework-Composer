@@ -11,6 +11,11 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    name: Unit Tests
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: Composer
     outputs:
       test-chunks: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
       test-chunk-ids: ${{ steps['set-test-chunk-ids'].outputs['test-chunk-ids'] }}
@@ -42,6 +47,10 @@ jobs:
         run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
         env:
           CHUNKS: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./Composer/coverage/lcov.info
+          base-path: ./Composer
   test:
     runs-on: ubuntu-latest
     name: test (chunk ${{ matrix.dir }})
