@@ -10,8 +10,7 @@ on:
   workflow_dispatch:
 defaults:
   run:
-    shell: bash
-    working-directory: Composer
+    working-directory: ./Composer
 jobs:
   setup:
     runs-on: ubuntu-latest
