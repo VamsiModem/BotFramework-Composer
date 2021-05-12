@@ -34,7 +34,7 @@ jobs:
         run: yarn build:dev
       - id: set-test-chunks
         name: Set Chunks
-        run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 2 | floor)]')"
+        run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 20 | floor)]')"
       - id: set-test-chunk-ids
         name: Set Chunk IDs
         run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
@@ -43,6 +43,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: test (chunk ${{ matrix.dir }})
+    defaults:
+      run:
+        working-directory: Composer
     needs: [setup]
     strategy:
       fail-fast: true
