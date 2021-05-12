@@ -17,7 +17,7 @@ jobs:
     steps:
       - id: set-test-chunks
         name: Set Chunks
-        run: echo $(find -type d -name Composer)
+        run: echo $(locate -b \Composer)
       - id: set-test-chunk-ids
         name: Set Chunk IDs
         run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
