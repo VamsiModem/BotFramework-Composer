@@ -32,7 +32,7 @@ jobs:
       - setup
     strategy:
       matrix:
-        chunk: ${{ fromJson(needs.setup.outputs['test-chunk-ids']) }}
+        chunk: ${{fromJson(needs.setup.outputs.test-chunk-ids)}}
     steps:
       - uses: actions/checkout@v2
       - run: npm install
