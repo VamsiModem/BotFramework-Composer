@@ -15,7 +15,7 @@ jobs:
       test-chunks: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
       test-chunk-ids: ${{ steps['set-test-chunk-ids'].outputs['test-chunk-ids'] }}
     steps:
-    - name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
       - name: Set Node Version
         uses: actions/setup-node@v1
