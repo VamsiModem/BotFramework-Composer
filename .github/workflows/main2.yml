@@ -45,7 +45,7 @@ jobs:
         uses: actions/cache@v2
         id: job-cached-build
         with:
-          path: ["./*", "!~/node_modules"]
+          path: ./*
           key: ${{ github.sha }}
       - id: set-test-chunks
         name: Set Chunks
