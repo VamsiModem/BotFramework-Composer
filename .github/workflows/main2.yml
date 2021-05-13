@@ -26,6 +26,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.15.5
+      - name: Clear global yarn cache
+        run: yarn cache clean
+      - name: yarn --update-checksums
+        run: yarn --update-checksums
       - name: yarn build:dev
         run: yarn build:dev
       - name: Get yarn cache directory path
